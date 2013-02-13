@@ -495,4 +495,3 @@ def mergeLocales( extrasDir, resourcesDir ):
     
 if __name__ == "__main__":
     main()    
-    
