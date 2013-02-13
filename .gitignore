@@ -1,10 +1,8 @@
-*.class
+# Folders #
+target
+extras
+.idea
 
-# Package Files #
-*.jar
-*.war
-*.ear
-/.idea
-target/
+# File types #
 *.iml
-extras/
+
