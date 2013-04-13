@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<module rename-to='i18nSample'>
+    <!-- Inherit the core Web Toolkit stuff.                        -->
+    <inherits name='com.google.gwt.inject.Inject'/>
+
+    <!-- Inherit the default GWT style sheet.  You can change       -->
+    <!-- the theme of your GWT application by uncommenting          -->
+    <!-- any one of the following lines.                            -->
+    <inherits name='com.google.gwt.user.theme.standard.Standard'/>
+    <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
+    <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
+
+    <!-- Entry point -->
+    <inherits name="com.gwtplatform.mvp.MvpWithEntryPoint"/>
+
+    <!-- French language, independent of country -->
+    <extend-property name="locale" values="fr" />
+    <!-- English language, independent of country -->
+    <extend-property name="locale" values="en" />
+    <set-property-fallback name="locale" value="en" />
+
+    <!-- Specify the paths for translatable code                    -->
+    <source path='client'/>
+    <source path='shared'/>
+
+    <set-configuration-property name="gin.ginjector.modules"
+                                value="com.arcbees.i18nsample.client.gin.ClientModule"/>
+</module>
