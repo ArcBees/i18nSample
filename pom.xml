@@ -16,7 +16,9 @@
         <gwtp.version>1.0-RC-2-SNAPSHOT</gwtp.version>
 
         <!-- server -->
-        <gae.home>${settings.localRepository}/com/google/appengine/appengine-java-sdk/${gae.version}/appengine-java-sdk-${gae.version}</gae.home>
+        <gae.home>
+            ${settings.localRepository}/com/google/appengine/appengine-java-sdk/${gae.version}/appengine-java-sdk-${gae.version}
+        </gae.home>
         <gae.version>1.7.4</gae.version>
 
         <!-- DI -->
@@ -30,6 +32,9 @@
         <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
         <maven-gae-plugin.version>0.9.5</maven-gae-plugin.version>
         <maven-deploy-plugin.version>2.7</maven-deploy-plugin.version>
+
+        <!-- Build config -->
+        <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
     </properties>
 
     <repositories>
@@ -43,62 +48,9 @@
         </repository>
     </repositories>
 
-    <dependencies>
-        <!-- Google Web Toolkit dependencies -->
-        <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-user</artifactId>
-            <version>${gwt.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- GWT-Platform dependencies -->
-        <dependency>
-            <groupId>com.gwtplatform</groupId>
-            <artifactId>gwtp-mvp-client</artifactId>
-            <version>${gwtp.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-         <!--DI dependencies-->
-        <dependency>
-            <groupId>com.google.gwt.inject</groupId>
-            <artifactId>gin</artifactId>
-            <version>${gin.version}</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
-
     <build>
-        <!--suppress MavenModelInspection -->
         <outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
-
         <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>gwt-maven-plugin</artifactId>
-                <version>${gwt.version}</version>
-                <executions>
-                    <execution>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <appEngineVersion>${gae.version}</appEngineVersion>
-                    <server>com.google.appengine.tools.development.gwt.AppEngineLauncher</server>
-                    <bindAddress>localhost</bindAddress>
-                    <runTarget>i18nSample.html</runTarget>
-                    <extraJvmArgs>-Xmx512m -Xss1024k</extraJvmArgs>
-                    <hostedWebapp>${webappDirectory}</hostedWebapp>
-                    <copyWebapp>true</copyWebapp>
-                    <extraParam>true</extraParam>
-                    <extra>extras</extra>
-                </configuration>
-            </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -113,17 +65,31 @@
             </plugin>
 
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <version>${gwt.version}</version>
+                <configuration>
+                    <bindAddress>localhost</bindAddress>
+                    <runTarget>i18nSample.html</runTarget>
+                    <extraJvmArgs>-Xmx1024m -Xss1024k -XX:MaxPermSize=512m</extraJvmArgs>
+                    <extraParam>true</extraParam>
+                    <extra>extras</extra>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>net.kindleit</groupId>
                 <artifactId>maven-gae-plugin</artifactId>
                 <version>${maven-gae-plugin.version}</version>
                 <executions>
-                    <execution>
-                        <id>install-server-jar</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                    </execution>
                     <execution>
                         <phase>deploy</phase>
                         <goals>
@@ -143,4 +109,30 @@
             </plugin>
         </plugins>
     </build>
+
+    <dependencies>
+        <!-- Google Web Toolkit dependencies -->
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>${gwt.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- GWT-Platform dependencies -->
+        <dependency>
+            <groupId>com.gwtplatform</groupId>
+            <artifactId>gwtp-mvp-client</artifactId>
+            <version>${gwtp.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--DI dependencies-->
+        <dependency>
+            <groupId>com.google.gwt.inject</groupId>
+            <artifactId>gin</artifactId>
+            <version>${gin.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>
